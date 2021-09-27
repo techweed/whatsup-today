@@ -8,7 +8,7 @@ const AppRoutes = () => {
 		<Router>
 			<Switch>
 				{routes.map(({ component: Component, path, ...rest }) => (
-					<Route {...rest} key={path}>
+					<Route {...rest} key={path} path={path}>
 						<Suspense fallback={<AppSpinner />}>
 							<Component />
 						</Suspense>
