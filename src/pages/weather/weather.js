@@ -22,12 +22,13 @@ const Weather = () => {
 
   useEffect(() => {
     let lat, lon;
+    // checking if location data is available
     navigator.geolocation.getCurrentPosition(function (position) {
       lat = position.coords.latitude;
       lon = position.coords.longitude;
 
       let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_KEY}&units=metric`;
-
+      // calling weather api
       axios({
         method: "GET",
         url: url,
@@ -38,10 +39,12 @@ const Weather = () => {
         })
         .catch((e) => {
           setError(true);
+          setLoading(false);
         });
     });
   }, []);
 
+  //To set corresponding background with weather
   const setBg = (x) => {
     switch (true) {
       case x < 300:
@@ -77,13 +80,23 @@ const Weather = () => {
     >
       <div className="mask">
         <img src={back} className="icon-back" onClick={toBack} />
+        <div className="temperature">
+          <div>Temperature: {data?.main?.temp}</div>
+          <div>Feels Like: {data?.main?.feels_like}</div>
+          <div>Pressure: {data?.main?.pressure}</div>
+          <div>Humidity: {data?.main?.humidity}</div>
+          <br />
+          <div>Wind Speed: {data?.wind?.speed}</div>
+          <div>Wind Degree: {data?.wind?.deg}</div>
+        </div>
         <div className="weather-title">
           {data.weather &&
             data?.weather[0]?.description.charAt(0).toUpperCase() +
               data?.weather[0]?.description.slice(1)}
           {loading ? "Loading..." : ""}
-          {error ? "Sorry, Service Unavailable" : ""}
+          {error && !loading ? "Sorry, Service Unavailable" : ""}
         </div>
+        <div>{data?.name}</div>
       </div>
     </div>
   );

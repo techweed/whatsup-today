@@ -1,28 +1,28 @@
 //dummy react project
-export const setRestaurants = (restaurants) => ({
-	type: 'SET_RESTAURANTS',
-	data: restaurants,
+export const setweathers = (weathers) => ({
+  type: "SET_WEATHERS",
+  data: weathers,
 });
 
 const initialState = {
-	restaurants: [],
+  weathers: [],
 };
 
 const homeReducer = (state = initialState, action) => {
-	switch (action.type) {
-		case 'SET_RESTAURANTS':
-			return {
-				...state,
-				restaurants: action.data,
-			};
+  switch (action.type) {
+    case "SET_WEATHERS":
+      return {
+        ...state,
+        weathers: action.data,
+      };
 
-		default:
-			return state;
-	}
+    default:
+      return state;
+  }
 };
 
-export function getRestaurants(state) {
-	return state.homeReducer.restaurants;
+export function getweathers(state) {
+  return state.homeReducer.weathers;
 }
 
 export default homeReducer;
