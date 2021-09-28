@@ -9,13 +9,16 @@ import {
   Images6,
   Images7,
   Images8,
+  back,
 } from "../../assests/images";
+import { useHistory } from "react-router";
 
 const Weather = () => {
   const WEATHER_KEY = process.env.REACT_APP_WEATHER_API_KEY;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     let lat, lon;
@@ -60,6 +63,10 @@ const Weather = () => {
     }
   };
 
+  const toBack = () => {
+    history.goBack();
+  };
+
   return (
     <div
       className="body-background"
@@ -69,8 +76,11 @@ const Weather = () => {
       }}
     >
       <div className="mask">
+        <img src={back} className="icon-back" onClick={toBack} />
         <div className="weather-title">
-          {data.weather && data?.weather[0]?.description}
+          {data.weather &&
+            data?.weather[0]?.description.charAt(0).toUpperCase() +
+              data?.weather[0]?.description.slice(1)}
           {loading ? "Loading..." : ""}
           {error ? "Sorry, Service Unavailable" : ""}
         </div>
