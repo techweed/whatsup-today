@@ -7,6 +7,7 @@ import Images7 from "./7.jpg";
 import Images8 from "./8.jpg";
 import weather from "./weather.png";
 import back from "./back.png";
+import language from "./language.png";
 
 export {
   Images2,
@@ -18,4 +19,5 @@ export {
   Images8,
   weather,
   back,
+  language,
 };

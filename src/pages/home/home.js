@@ -1,17 +1,25 @@
 import React, { useState, useRef, useCallback } from "react";
 import useNewsSearch from "./useNewsSearch";
-import "./styles.css";
-import { weather } from "../../assests/images";
 import { useHistory } from "react-router";
+import { weather, language } from "../../assests/images";
+import "./styles.css";
+import { countryList, languageList } from "../../helpers/constants";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-
-  const { news, hasMore, loading, error } = useNewsSearch(query, pageNumber);
+  const [countryCode, setCountryCode] = useState("in");
+  const [languageCode, setLanguageCode] = useState("en");
+  const { news, hasMore, loading, error } = useNewsSearch(
+    query,
+    pageNumber,
+    countryCode,
+    languageCode
+  );
   const history = useHistory();
-
   const observer = useRef();
+
+  //Infinite loading setup
   const lastBookElementRef = useCallback(
     (node) => {
       /** stop if already loading */
@@ -33,15 +41,18 @@ const Home = () => {
     [loading, hasMore]
   );
 
+  //Search Function
   function handleSearch(e) {
     setQuery(e.target.value);
     setPageNumber(1);
   }
 
+  //Navigation to weather page
   const toWeather = () => {
     history.push("/weather");
   };
 
+  //Dynamic rendering of List item
   const RenderItemBody = ({ item }) => (
     <>
       <div className="cardRight">
@@ -63,16 +74,43 @@ const Home = () => {
     </>
   );
 
+  //Language Dropdown item
+  const renderDataDropDown = (item, index) => {
+    return (
+      <li
+        key={index}
+        value={item}
+        onClick={() => {
+          query.trim()
+            ? setLanguageCode(item.slice(-2))
+            : setCountryCode(item.slice(-2));
+        }}
+      >
+        <a>{item}</a>
+      </li>
+    );
+  };
+
   return (
     <>
       <div className="content">
-        <input
-          type="text"
-          value={query}
-          onChange={handleSearch}
-          placeholder="Search"
-          className="search"
-        ></input>
+        <div className="input-container">
+          <input
+            type="text"
+            value={query}
+            onChange={handleSearch}
+            placeholder="Search"
+            className="search"
+          ></input>
+        </div>
+        <img tabIndex="0" src={language} className="language" />
+        {
+          <ul className="dropdown-menu">
+            {query.trim()
+              ? languageList.map(renderDataDropDown)
+              : countryList.map(renderDataDropDown)}
+          </ul>
+        }
         <img src={weather} className="weather" onClick={toWeather} />
       </div>
       <div className="ListBody">
@@ -101,7 +139,7 @@ const Home = () => {
           }
         })}
         <div>{loading && "Loading..."}</div>
-        <div>{error && "Error"}</div>
+        <div>{error && !loading && "Network Error"}</div>
       </div>
     </>
   );
