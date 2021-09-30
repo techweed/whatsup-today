@@ -1,8 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import useNewsSearch from "./useNewsSearch";
 import { useHistory } from "react-router";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import { weather, language, calendar } from "../../assests/images";
 import "./styles.css";
@@ -11,10 +10,13 @@ import {
   languageList,
   categoryList,
 } from "../../helpers/constants";
+import ColorTheme from "../../components/colorTheme";
+import InfiniteList from "../../components/InfiniteList";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [theme, setTheme] = useState("white");
   const [countryCode, setCountryCode] = useState("in");
   const [languageCode, setLanguageCode] = useState("en");
   const [startDate, setStartDate] = useState(new Date());
@@ -26,29 +28,6 @@ const Home = () => {
     startDate
   );
   const history = useHistory();
-  const observer = useRef();
-
-  //Infinite loading setup
-  const lastBookElementRef = useCallback(
-    (node) => {
-      /** stop if already loading */
-      if (loading) return;
-
-      /** after loading disconnect the observer from previous last element */
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        /** condition to trigger when the last node becomes visible and set next page number to call api */
-        if (entries[0].isIntersecting && hasMore) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1);
-        }
-      });
-
-      /** connect to the new last element */
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore]
-  );
 
   //Search Function
   function handleSearch(e) {
@@ -60,28 +39,6 @@ const Home = () => {
   const toWeather = () => {
     history.push("/weather");
   };
-
-  //Dynamic rendering of List item
-  const RenderItemBody = ({ item }) => (
-    <>
-      <div className="cardRight">
-        <img
-          src={
-            item.urlToImage
-              ? item.urlToImage
-              : "https://cdn3.vectorstock.com/i/1000x1000/35/52/placeholder-rgb-color-icon-vector-32173552.jpg"
-          }
-          className="image"
-          alt="Logo"
-        />
-      </div>
-      <div className="cardLeft">
-        <div className="cardTitle">{item.title}</div>
-        <div className="desc">{item.content}</div>
-        <div className="desc-i">{item.author && "-- " + item.author}</div>
-      </div>
-    </>
-  );
 
   //Language Dropdown item
   const renderDataDropDown = (item, index) => {
@@ -102,8 +59,9 @@ const Home = () => {
 
   return (
     <div className="homebody">
-      <div className="header">
+      <div className="header" style={{ backgroundColor: theme }}>
         <div className="searchBar">
+          <ColorTheme setTheme={setTheme} />
           <div className="input-container">
             <input
               type="text"
@@ -143,31 +101,20 @@ const Home = () => {
           />
         </div>
         <div className="navHeader">
-          <span className="categoryHead">Top Stories:</span>
           <span className="scrollH">
             {categoryList.map((item) => (
-              <span className="categoryItem">{item}</span>
+              <span className="categoryItem">{item.toUpperCase()}</span>
             ))}
           </span>
         </div>
       </div>
-
-      <div className="ListBody">
-        {news.map((item, index) => {
-          return (
-            <div
-              ref={news.length === index + 1 ? lastBookElementRef : null} //when this element is created i.e. as the last element. It invokes callback which it is assigned to, with the element as param.
-              key={item.title}
-              className="post"
-              onClick={() => window.open(item.url, "_blank")}
-            >
-              <RenderItemBody item={item} />
-            </div>
-          );
-        })}
-        <div>{loading && "Loading..."}</div>
-        <div>{error && !loading && "Network Error"}</div>
-      </div>
+      <InfiniteList
+        news={news}
+        hasMore={hasMore}
+        loading={loading}
+        error={error}
+        setPageNumber={setPageNumber}
+      />
     </div>
   );
 };
