@@ -102,42 +102,56 @@ const Home = () => {
 
   return (
     <div className="homebody">
-      <div className="content">
-        <div className="input-container">
-          <input
-            type="text"
-            value={query}
-            onChange={handleSearch}
-            placeholder="Search"
-            className="search"
-          ></input>
-        </div>
-        <img src={calendar} className="calendar" />
-        <div className="datePicker">
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            inline
-            dateFormat="yyyy-MM-dd"
+      <div className="header">
+        <div className="searchBar">
+          <div className="input-container">
+            <input
+              type="text"
+              value={query}
+              onChange={handleSearch}
+              placeholder="Search"
+              className="search"
+            ></input>
+            <ul>
+              <li>
+                <img src={calendar} className="calendar" alt="calendar" />
+                <div className="datePicker">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    inline
+                    dateFormat="yyyy-MM-dd"
+                  />
+                </div>
+              </li>
+              <li>
+                <img src={language} className="language" alt="language" />
+
+                <ul className="dropdown-menu">
+                  {query.trim()
+                    ? languageList.map(renderDataDropDown)
+                    : countryList.map(renderDataDropDown)}
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <img
+            src={weather}
+            className="weather"
+            onClick={toWeather}
+            alt="weather"
           />
         </div>
-
-        <img src={language} className="language" />
-
-        <ul className="dropdown-menu">
-          {query.trim()
-            ? languageList.map(renderDataDropDown)
-            : countryList.map(renderDataDropDown)}
-        </ul>
-
-        <img src={weather} className="weather" onClick={toWeather} />
+        <div className="navHeader">
+          <span className="categoryHead">Top Stories:</span>
+          <span className="scrollH">
+            {categoryList.map((item) => (
+              <span className="categoryItem">{item}</span>
+            ))}
+          </span>
+        </div>
       </div>
-      <div className="content scrollH">
-        <span className="categoryHead">Top Stories:</span>
-        {categoryList.map((item) => (
-          <span className="categoryItem">{item}</span>
-        ))}
-      </div>
+
       <div className="ListBody">
         {news.map((item, index) => {
           return (

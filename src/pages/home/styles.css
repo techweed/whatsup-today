@@ -2,12 +2,20 @@
   overflow: hidden;
   margin: 0px;
   height: 100%;
+  padding-top: 120px;
 }
-.content {
+.header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: white;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-left: 9%;
+  flex-direction: column;
+  width: 100%;
+}
+.navHeader {
+  display: inline-block;
+  align-items: center;
 }
 .post {
   background-color: white;
@@ -23,15 +31,20 @@
 }
 .scrollH {
   overflow-x: auto;
+  justify-content: space-between;
+  display: inline-flex;
+  width: 80%;
 }
 .categoryHead {
   font-size: large;
   font-weight: 500;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-family: Impact;
   margin-left: 2%;
 }
 .categoryItem {
   margin-left: 2%;
+  font-weight: 400;
+  font-family: sans-serif;
 }
 .ListBody {
   display: flex;
@@ -67,12 +80,35 @@
   width: 360px;
   height: 200px;
 }
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .input-container {
-  width: 80%;
+  flex: 1 1;
+  display: flex;
   margin: 20px;
   padding: 5px;
   border-radius: 10px;
   border: 0.1em solid rgba(160, 160, 255, 0.5);
+  align-items: center;
+}
+.input-container > ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  display: inline-flex;
+  align-items: center;
+}
+.input-container > ul > li {
+  display: inline-flex;
+  margin-right: 15px;
+}
+.input-container > ul > li > img {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
 }
 .search {
   width: 100%;
@@ -88,19 +124,9 @@
   cursor: pointer;
 }
 .language {
-  padding: 15px 0px;
-  width: 20px;
-  position: absolute;
-  left: 82%;
-  top: 15px;
   cursor: pointer;
 }
 .calendar {
-  padding: 15px 0px;
-  width: 20px;
-  position: absolute;
-  left: calc(82% - 35px);
-  top: 15px;
   cursor: pointer;
 }
 .dropdown-menu {
@@ -215,5 +241,8 @@
   .dropdown-menu {
     left: unset;
     right: 0px;
+  }
+  .scrollH {
+    width: 100%;
   }
 }
