@@ -1,3 +1,8 @@
+.homebody {
+  overflow: hidden;
+  margin: 0px;
+  height: 100%;
+}
 .content {
   display: flex;
   flex-direction: row;
@@ -16,11 +21,24 @@
   display: flex;
   overflow: hidden;
 }
+.scrollH {
+  overflow-x: auto;
+}
+.categoryHead {
+  font-size: large;
+  font-weight: 500;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  margin-left: 2%;
+}
+.categoryItem {
+  margin-left: 2%;
+}
 .ListBody {
   display: flex;
   align-items: center;
   margin: 20px;
   flex-direction: column;
+  overflow-y: auto;
 }
 .cardRight {
   margin-right: 10px;
@@ -70,42 +88,63 @@
   cursor: pointer;
 }
 .language {
-  margin: 10px;
-  padding: 15px;
+  padding: 15px 0px;
   width: 20px;
   position: absolute;
-  left: 80%;
-  top: 5px;
+  left: 82%;
+  top: 15px;
+  cursor: pointer;
+}
+.calendar {
+  padding: 15px 0px;
+  width: 20px;
+  position: absolute;
+  left: calc(82% - 35px);
+  top: 15px;
   cursor: pointer;
 }
 .dropdown-menu {
   position: absolute;
   top: 59px;
   left: 81%;
-  min-width: 110px;
-  padding: 5px;
+  min-width: 100px;
+  padding: 0px;
   font-size: 14px;
   text-align: left;
   list-style: none;
   background-color: #fff;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  /* border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15); */
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   max-height: 0px;
   transition: max-height 0.15s ease-out;
   overflow-y: auto;
   margin: 0px;
-  display: none;
 }
 
 .language:hover + .dropdown-menu,
 .dropdown-menu:hover {
-  display: block;
   max-height: 300px;
-  transition: max-height 0.95s ease-out;
+  transition: max-height 0.15s ease-out;
+}
+.datePicker {
+  position: absolute;
+  top: 61px;
+  left: calc(79% - 35px);
+  display: none;
+}
+.datePicker div .react-datepicker {
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.275);
+  overflow: hidden;
+  border: 0px;
+}
+.calendar:hover + .datePicker,
+.datePicker:hover {
+  display: block;
 }
 .dropdown-menu li {
   cursor: pointer;
@@ -123,6 +162,13 @@
   white-space: nowrap;
   text-decoration: none;
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollH::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 @media screen and (max-width: 769px) {
   .content {
     margin-left: unset;
@@ -131,6 +177,9 @@
     flex-direction: column;
     padding: 0px;
     width: 90%;
+  }
+  .categoryHead {
+    display: none;
   }
   .ListBody {
     margin: 0px;
@@ -154,7 +203,14 @@
     width: 75%;
   }
   .language {
-    left: 65%;
+    left: 70%;
+    width: 16px;
+    top: 18px;
+  }
+  .calendar {
+    left: calc(70% - 30px);
+    width: 16px;
+    top: 18px;
   }
   .dropdown-menu {
     left: unset;

@@ -1,20 +1,29 @@
 import React, { useState, useRef, useCallback } from "react";
 import useNewsSearch from "./useNewsSearch";
 import { useHistory } from "react-router";
-import { weather, language } from "../../assests/images";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { weather, language, calendar } from "../../assests/images";
 import "./styles.css";
-import { countryList, languageList } from "../../helpers/constants";
+import {
+  countryList,
+  languageList,
+  categoryList,
+} from "../../helpers/constants";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [countryCode, setCountryCode] = useState("in");
   const [languageCode, setLanguageCode] = useState("en");
+  const [startDate, setStartDate] = useState(new Date());
   const { news, hasMore, loading, error } = useNewsSearch(
     query,
     pageNumber,
     countryCode,
-    languageCode
+    languageCode,
+    startDate
   );
   const history = useHistory();
   const observer = useRef();
@@ -69,7 +78,7 @@ const Home = () => {
       <div className="cardLeft">
         <div className="cardTitle">{item.title}</div>
         <div className="desc">{item.content}</div>
-        <div className="desc-i">{item.author}</div>
+        <div className="desc-i">{item.author && "-- " + item.author}</div>
       </div>
     </>
   );
@@ -92,7 +101,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="homebody">
       <div className="content">
         <div className="input-container">
           <input
@@ -103,45 +112,49 @@ const Home = () => {
             className="search"
           ></input>
         </div>
-        <img tabIndex="0" src={language} className="language" />
-        {
-          <ul className="dropdown-menu">
-            {query.trim()
-              ? languageList.map(renderDataDropDown)
-              : countryList.map(renderDataDropDown)}
-          </ul>
-        }
+        <img src={calendar} className="calendar" />
+        <div className="datePicker">
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            inline
+            dateFormat="yyyy-MM-dd"
+          />
+        </div>
+
+        <img src={language} className="language" />
+
+        <ul className="dropdown-menu">
+          {query.trim()
+            ? languageList.map(renderDataDropDown)
+            : countryList.map(renderDataDropDown)}
+        </ul>
+
         <img src={weather} className="weather" onClick={toWeather} />
+      </div>
+      <div className="content scrollH">
+        <span className="categoryHead">Top Stories:</span>
+        {categoryList.map((item) => (
+          <span className="categoryItem">{item}</span>
+        ))}
       </div>
       <div className="ListBody">
         {news.map((item, index) => {
-          if (news.length === index + 1) {
-            return (
-              <div
-                ref={lastBookElementRef} //when this element is created i.e. as the last element. It invokes callback which it is assigned to, with the element as param.
-                key={item.title}
-                className="post"
-                onClick={() => window.open(item.url, "_blank")}
-              >
-                <RenderItemBody item={item} />
-              </div>
-            );
-          } else {
-            return (
-              <div
-                key={item.title}
-                className="post"
-                onClick={() => window.open(item.url, "_blank")}
-              >
-                <RenderItemBody item={item} />
-              </div>
-            );
-          }
+          return (
+            <div
+              ref={news.length === index + 1 ? lastBookElementRef : null} //when this element is created i.e. as the last element. It invokes callback which it is assigned to, with the element as param.
+              key={item.title}
+              className="post"
+              onClick={() => window.open(item.url, "_blank")}
+            >
+              <RenderItemBody item={item} />
+            </div>
+          );
         })}
         <div>{loading && "Loading..."}</div>
         <div>{error && !loading && "Network Error"}</div>
       </div>
-    </>
+    </div>
   );
 };
 

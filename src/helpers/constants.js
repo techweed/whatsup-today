@@ -1,3 +1,12 @@
+export const categoryList = [
+  "Business",
+  "Entertainment",
+  "General",
+  "Health",
+  "Science",
+  "Sports",
+  "Technology",
+];
 // Language Data
 export const languageList = [
   "Arabic-ar",
@@ -57,7 +66,7 @@ export const countryList = [
   "Portugal-pt",
   "Romania-ro",
   "Serbia-rs",
-  "Russian Federation-ru",
+  "Russia-ru",
   "Saudi Arabia-sa",
   "Sweden-se",
   "Singapore-sg",
