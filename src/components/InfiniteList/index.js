@@ -1,13 +1,13 @@
-import React, { useRef, useCallback } from "react";
+import React, {useRef, useCallback} from "react";
 import "./styles.css";
 
-const InfiniteList = ({ news, loading, error, hasMore, setPageNumber }) => {
+const InfiniteList = ({news, loading, error, hasMore, setPageNumber}) => {
   const observer = useRef();
 
   //Infinite loading setup
   const lastElementRef = useCallback(
     (node) => {
-      /** stop if already loading */
+      /** stop if already loading.. */
       if (loading) return;
 
       /** after loading disconnect the observer from previous last element */
@@ -26,7 +26,7 @@ const InfiniteList = ({ news, loading, error, hasMore, setPageNumber }) => {
     [loading, hasMore]
   );
   //Dynamic rendering of List item
-  const RenderItemBody = ({ item }) => (
+  const RenderItemBody = ({item}) => (
     <>
       <div className="cardRight">
         <img
